@@ -19,8 +19,9 @@ public class GreatDataBase {
 		this.timezone = timezone;
 		prepareConnection();
 		
-		users = new UserBase(con, userTable);
-		
+		this.users = new UserBase(con, userTable);
+		this.events = new EventBase(con, eventTable);
+		this.tickets = new TicketBase(con, ticketTable);
 	}
 
 	public void prepareConnection() throws SQLException {
@@ -35,4 +36,18 @@ public class GreatDataBase {
 
 		con = DriverManager.getConnection(url + db + timezone, username, password);
 	}
+
+	public UserBase getUsers() {
+		return users;
+	}
+
+	public EventBase getEvents() {
+		return events;
+	}
+
+	public TicketBase getTickets() {
+		return tickets;
+	}
+	
+	
 }

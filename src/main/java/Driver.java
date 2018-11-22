@@ -9,11 +9,19 @@ public class Driver {
 		prepareConnection();
 		
 		UserBase ub = new UserBase(con, "Users");
+		EventBase events = new EventBase(con, "Events");
+		TicketBase tickets = new TicketBase(con, "Tickets");
+		
 		ub.saveUserData("pig", "hahaha", "test account 2");
 		System.out.println(ub.checkPass("pig", "hahaha"));
 		ub.changePassWord("pig", "huhuhu");
 		System.out.println(ub.checkPass("pig", "hahaha"));
 		System.out.println(ub.checkPass("pig", "huhuhu"));
+		
+		events.insertEvents("001", "black friday", "discount");
+		tickets.newTicket("001", "cat");
+		tickets.newTicket("002", "cat");
+		tickets.newTicket("001", "monkey");
 	}
 	
 	public static void prepareConnection() throws SQLException {

@@ -55,6 +55,9 @@ public class UserBase extends BasicBase{
 	}
 	
 	public boolean updateUserData(String userId, String query, String value) throws SQLException {
+		if(userId.equals("") || userId == null) {
+			return false;
+		}
 		if(!query.equals("detail") || value == null) {
 			return false;
 		}
@@ -69,9 +72,9 @@ public class UserBase extends BasicBase{
 				String salt = res.getNString("salt");
 				String truePass = res.getString("hashPass");
 				String hashPass = generateFinalPassword(salt, password);
-				System.out.println("salt: " + salt);
-				System.out.println("truePass: " + truePass);
-				System.out.println("hashPass: " + hashPass);
+//				System.out.println("salt: " + salt);
+//				System.out.println("truePass: " + truePass);
+//				System.out.println("hashPass: " + hashPass);
 				if(truePass.equals(hashPass)) {
 					return true;
 				}
