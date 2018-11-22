@@ -13,41 +13,10 @@ import javax.crypto.spec.PBEKeySpec;
 
 import com.mysql.cj.xdevapi.Statement;
 
-public class UserBase{
-	private String username;
-	private String password;
-	private String db;
-	private String table;
-	private String url;
-	private String timezone;
-	private final String TEST = "com.mysql.cj.jdbc.Driver";
-	private Connection con;
-	private Statement stmt;
+public class UserBase extends BasicBase{
 	
-	public UserBase(String username, String password, String database, 
-			        String table, String url, String timezone) throws SQLException {
-		this.username = username;
-		this.password = password;
-		this.db = database;
-		this.table = table;
-		this.url = url;
-		this.timezone = timezone;
-		
-		prepareConnection();
-	}
-	
-	public void prepareConnection() throws SQLException {
-		try {
-			// load driver
-			Class.forName(TEST).newInstance();
-		}
-		catch (Exception e) {
-			System.err.println("Can't find driver");
-			System.exit(1);
-		}
-		
-		con = DriverManager.getConnection(url + db + timezone, username, password);
-		
+	public UserBase(Connection con, String table) throws SQLException {
+		super(con, table);
 	}
 	
 	public boolean saveUserData(String userId, String password, String detail) throws SQLException {
@@ -70,7 +39,7 @@ public class UserBase{
 	}
 	
 	public boolean changePassWord(String userId, String newPassword) throws SQLException {
-		if(userId == null || userId.equals("") || password == null || password.equals("")) {
+		if(userId == null || userId.equals("") || newPassword == null || newPassword.equals("")) {
 			return false;
 		}
 		String newSalt = generateSalt();
@@ -85,15 +54,11 @@ public class UserBase{
 		return true;
 	}
 	
-	public boolean updateData(String userId, String query, String value) throws SQLException {
+	public boolean updateUserData(String userId, String query, String value) throws SQLException {
 		if(!query.equals("detail") || value == null) {
 			return false;
 		}
-		String state = "update " + table + " set " + query + " = ? where userId = ?";
-		PreparedStatement updateStmt = con.prepareStatement(state);
-		updateStmt.setString(1, value);
-		updateStmt.setString(2, userId);
-		updateStmt.execute();
+		updateData("userId", userId, query, value);
 		return true;
 	}
 	
@@ -117,16 +82,7 @@ public class UserBase{
 			return false;
 		}
 		return false;
-	}
-	
-	public ResultSet getResult(String query, String value) throws SQLException {
-		String sm = "select * from " + table + " where " + query + "=?";
-		PreparedStatement ps = con.prepareStatement(sm);
-		ps.setString(1, value);
-		ResultSet res = ps.executeQuery();
-		return res;
-	}
-	
+	}	
 	
 	public String generateSalt() {
 		SecureRandom random = new SecureRandom();
