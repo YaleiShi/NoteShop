@@ -1,3 +1,4 @@
+package dataBase;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -19,7 +20,8 @@ public class UserBase extends BasicBase{
 		super(con, table);
 	}
 	
-	public boolean saveUserData(String userId, String password, String detail) throws SQLException {
+	public boolean saveUserData(String userId, String password, 
+			String firstName, String lastName, String detail) throws SQLException {
 		//judge the parameter
 		if(userId == null || userId.equals("") || password == null || password.equals("")) {
 			return false;
@@ -28,12 +30,14 @@ public class UserBase extends BasicBase{
 		String salt = generateSalt();
 		String hashPass = generateFinalPassword(salt, password);
 		//open the link insert the parameter into the table
-		String state = "INSERT INTO " + table + " (userId, salt, hashPass, detail) VALUES (?, ?, ?, ?)";
+		String state = "INSERT INTO " + table + " (userId, salt, hashPass, firstName, lastName, detail) VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement insertStmt = con.prepareStatement(state);
 		insertStmt.setString(1, userId);
 		insertStmt.setString(2, salt);
 		insertStmt.setString(3, hashPass);
-		insertStmt.setString(4, detail);
+		insertStmt.setString(4, firstName);
+		insertStmt.setString(5, lastName);
+		insertStmt.setString(6, detail);
 		insertStmt.execute();
 		return true;
 	}
@@ -65,11 +69,32 @@ public class UserBase extends BasicBase{
 		return true;
 	}
 	
+	public boolean ifUserExist(String userId) {
+		try {
+			ResultSet res = getResult("userId", userId);
+			while(res.next()) {
+				String user = res.getString("userId");
+				if(user.equals(userId)) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
+	
+	public ResultSet getUser(String userId) throws SQLException {
+		return super.getResult("userId", userId);
+	}
+	
 	public boolean checkPass(String userId, String password) {
 		try {
 			ResultSet res = getResult("userId", userId);
 			while(res.next()) {
-				String salt = res.getNString("salt");
+				String salt = res.getString("salt");
 				String truePass = res.getString("hashPass");
 				String hashPass = generateFinalPassword(salt, password);
 //				System.out.println("salt: " + salt);

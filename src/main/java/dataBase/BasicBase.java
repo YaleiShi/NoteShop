@@ -1,3 +1,4 @@
+package dataBase;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +20,13 @@ public abstract class BasicBase {
 		updateStmt.setString(1, value);
 		updateStmt.setString(2, conditionValue);
 		updateStmt.execute();
+	}
+	
+	public ResultSet getAllResult() throws SQLException {
+		String sm = "select * from " + table;
+		PreparedStatement ps = con.prepareStatement(sm);
+		ResultSet res = ps.executeQuery();
+		return res;
 	}
 	
 	public ResultSet getResult(String query, String value) throws SQLException {
