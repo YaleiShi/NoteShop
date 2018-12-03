@@ -1,0 +1,1 @@
+{"username":"user45","password":"user45","url":"jdbc:mysql://127.0.0.1:3306/","database":"user45","timezone":"?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","userTable":"Users","eventTable":"Events","ticketTable":"Tickets","findPath":"/find","chatPort":"9090","chatPath":"/slackbot"}
