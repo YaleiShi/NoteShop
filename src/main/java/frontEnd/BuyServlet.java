@@ -9,6 +9,11 @@ import javax.servlet.http.HttpSession;
 
 import dataBase.GreatDataBase;
 
+/**
+ * the servlet which handle the buy ticket action
+ * @author yalei
+ *
+ */
 public class BuyServlet extends BaseServlet{
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

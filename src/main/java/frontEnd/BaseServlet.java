@@ -56,6 +56,12 @@ public class BaseServlet extends HttpServlet {
 
 	}
 	
+	/**
+	 * the simple header which can be called
+	 * by any substructures
+	 * @param title
+	 * @return
+	 */
 	protected String simpleHeader(String title) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><title>" + title + "</title></head><body>");
@@ -73,10 +79,22 @@ public class BaseServlet extends HttpServlet {
 		return "<form action=\"" + path + "\" method=\"post\">";
 	}
 	
+	/**
+	 * prepare a simple line of form body
+	 * for the html page
+	 * @param title
+	 * @param type
+	 * @param query
+	 * @return
+	 */
 	protected String formBody(String title, String type, String query) {
 		return "<br>" + title + " : <br>" + "<input type=\"" + type + "\" name=\"" + query + "\"/> ";
 	}
 	
+	/**
+	 * prepare the simple line of form footer
+	 * @return
+	 */
 	protected String formFooter() {
 		return "<br><input type=\"submit\" value=\"Submit\"/></form>";
 	}
@@ -90,12 +108,25 @@ public class BaseServlet extends HttpServlet {
 		sb.append("<html><head><title>" + title + "</title>"
 				+ "</head><body>");
 		sb.append("<center>");
+		sb.append("<img src=\"logo.jpg\" alt=\"logo\">");
 		sb.append("<h1>This is Ticket Purchase APP</h1>");
 		sb.append("<a href=\"mainPage\" style=" + ButtonStyle + ">Main Page</a>");
 		sb.append("<a href=\"userInfo\" style=" + ButtonStyle + ">User Info & Tickets</a>");
 		sb.append("<a href=\"eventAdmin\" style=" + ButtonStyle + ">Event Interface</a>");
 		sb.append("<a href=\"logout\" style=" + ButtonStyle + ">Logout</a>");
 		sb.append("<hr><hr>");
+		sb.append("<form action=\"search\" method=\"get\">");
+		sb.append("Search event by: ");
+		sb.append("<select name=\"searchType\">");
+		sb.append("<option value=\"eventId\">event id</option>");
+		sb.append("<option value=\"eventName\">event name</option>");
+		sb.append("<option value=\"num\">amount of tickets</option>");
+		sb.append("<option value=\"description\">description</option>");
+		sb.append("<option value=\"createBy\">creator</option>");
+		sb.append("</select>");
+		sb.append("Query: ");
+		sb.append("<input type=\"text\" name=\"query\"> ");
+		sb.append("<input type=\"submit\" value=\"Submit\"></form><hr>");
 		return sb.toString();		
 	}
 	

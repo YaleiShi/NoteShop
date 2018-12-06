@@ -4,12 +4,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * The ticket base used to maintain the functions
+ * and connection to the mysql server
+ * @author yalei
+ *
+ */
 public class TicketBase extends BasicBase{
 	
+	/**
+	 * pass the connection and table name to build the data base
+	 * @param con
+	 * @param table
+	 */
 	public TicketBase(Connection con, String table) {
 		super(con, table);
 	}
 	
+	/**
+	 * create a new ticket by entering the event id and user id
+	 * loop for num times
+	 * @param eventId
+	 * @param userId
+	 * @param num
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean newTicket(String eventId, String userId, int num) throws SQLException {
 		//judge the parameter
 		if(eventId == null || eventId.equals("") || userId == null || userId.equals("")) {
@@ -27,6 +47,14 @@ public class TicketBase extends BasicBase{
 		return true;
 	}
 	
+	/**
+	 * verify the owner of the ticket
+	 * by the ticket id and user id
+	 * @param userId
+	 * @param ticketId
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean verifyOwner(String userId, int ticketId) throws SQLException {
 		String sm = "select * from " + table + " where ticketId=?";
 		PreparedStatement ps = con.prepareStatement(sm);
@@ -41,6 +69,13 @@ public class TicketBase extends BasicBase{
 		return false;
 	}
 	
+	/**
+	 * change the user of the ticket to the target user id
+	 * @param userId
+	 * @param ticketId
+	 * @param target
+	 * @return
+	 */
 	public boolean changeUser(String userId, int ticketId, String target){
 		if(target == null) {
 			return false;

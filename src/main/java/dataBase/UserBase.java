@@ -14,12 +14,38 @@ import javax.crypto.spec.PBEKeySpec;
 
 import com.mysql.cj.xdevapi.Statement;
 
+/**
+ * the user data base, 
+ * maintain the functions and connection to the mysql database
+ * @author yalei
+ *
+ */
 public class UserBase extends BasicBase{
 	
+	/**
+	 * pass in the connection and table name to build the 
+	 * database
+	 * @param con
+	 * @param table
+	 * @throws SQLException
+	 */
 	public UserBase(Connection con, String table) throws SQLException {
 		super(con, table);
 	}
 	
+	/**
+	 * create a new user by all the parameters,
+	 * generate a random salt and combine with the password to 
+	 * generate the final hashed password
+	 * then save everything into the mysql server
+	 * @param userId
+	 * @param password
+	 * @param firstName
+	 * @param lastName
+	 * @param detail
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean saveUserData(String userId, String password, 
 			String firstName, String lastName, String detail) throws SQLException {
 		//judge the parameter
@@ -42,6 +68,14 @@ public class UserBase extends BasicBase{
 		return true;
 	}
 	
+	/**
+	 * change the password of the user who has the user id
+	 * return true if succeed
+	 * @param userId
+	 * @param newPassword
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean changePassWord(String userId, String newPassword) throws SQLException {
 		if(userId == null || userId.equals("") || newPassword == null || newPassword.equals("")) {
 			return false;
@@ -58,6 +92,16 @@ public class UserBase extends BasicBase{
 		return true;
 	}
 	
+	/**
+	 * update the data of the user
+	 * can generally update any piece of data by entering
+	 * the different query and value
+	 * @param userId
+	 * @param query the piece of data you want to change
+	 * @param value the value you want to put into
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean updateUserData(String userId, String query, String value) throws SQLException {
 		if(userId.equals("") || userId == null) {
 			return false;
@@ -69,6 +113,12 @@ public class UserBase extends BasicBase{
 		return true;
 	}
 	
+	/**
+	 * check if the user id is already existed,
+	 * return true if yes
+	 * @param userId
+	 * @return
+	 */
 	public boolean ifUserExist(String userId) {
 		try {
 			ResultSet res = getResult("userId", userId);
@@ -86,10 +136,27 @@ public class UserBase extends BasicBase{
 		return false;
 	}
 	
+	/**
+	 * general function to get any line of user in the 
+	 * user table
+	 * @param userId
+	 * @return
+	 * @throws SQLException
+	 */
 	public ResultSet getUser(String userId) throws SQLException {
 		return super.getResult("userId", userId);
 	}
 	
+	/**
+	 * check if the password is correct
+	 * by take out the salt stored in the database
+	 * combine with the password user entered and generate the hashed password
+	 * finally compare with the stored hashed password in the database
+	 * return true if equal
+	 * @param userId
+	 * @param password
+	 * @return
+	 */
 	public boolean checkPass(String userId, String password) {
 		try {
 			ResultSet res = getResult("userId", userId);
@@ -97,9 +164,6 @@ public class UserBase extends BasicBase{
 				String salt = res.getString("salt");
 				String truePass = res.getString("hashPass");
 				String hashPass = generateFinalPassword(salt, password);
-//				System.out.println("salt: " + salt);
-//				System.out.println("truePass: " + truePass);
-//				System.out.println("hashPass: " + hashPass);
 				if(truePass.equals(hashPass)) {
 					return true;
 				}
@@ -112,6 +176,11 @@ public class UserBase extends BasicBase{
 		return false;
 	}	
 	
+	/**
+	 * generate a new random salt
+	 * return it as a string
+	 * @return
+	 */
 	public String generateSalt() {
 		SecureRandom random = new SecureRandom();
 		byte[] salt = new byte[16];
@@ -119,6 +188,13 @@ public class UserBase extends BasicBase{
 		return new String(salt);
 	}
 	
+	/**
+	 * take the salt string and password string
+	 * hash them together and return the final hashed password as string
+	 * @param saltS
+	 * @param password
+	 * @return
+	 */
 	public String generateFinalPassword(String saltS, String password) {
 		byte[] salt = saltS.getBytes();
 		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);

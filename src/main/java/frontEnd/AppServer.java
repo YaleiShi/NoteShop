@@ -9,9 +9,19 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import dataBase.GreatDataBase;
 
-
+/**
+ * the server starter of the application
+ * @author yalei
+ *
+ */
 public class AppServer {
 	
+	/**
+	 * start the server and put all the servlet into the
+	 * servlet handler
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		Server server = new Server(7070);
         
@@ -53,7 +63,7 @@ public class AppServer {
         servhandler.addServlet(CreateEventServlet.class, "/createEvent");
         servhandler.addServlet(UpdateEventServlet.class, "/updateEvent");
         servhandler.addServlet(TransactionServlet.class, "/send");
-//        servhandler.addServlet(CreateEventServlet.class, "/createEvent");
+        servhandler.addServlet(SearchServlet.class, "/search");
         
       //set the list of handlers for the server
         server.setHandler(servhandler);
