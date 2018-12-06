@@ -12,6 +12,10 @@ import dataBase.GreatDataBase;
 
 public class UserInfoServlet extends BaseServlet{
 	
+	/**
+	 * display the user information page
+	 * and the list of tickets
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		
