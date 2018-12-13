@@ -12,6 +12,10 @@ import dataBase.GreatDataBase;
 
 public class SearchServlet extends BaseServlet{
 	
+	/**
+	 * call the partial search method in the data manager
+	 * and display result list
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		

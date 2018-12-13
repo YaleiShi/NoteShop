@@ -65,7 +65,7 @@ public class AppServer {
         servhandler.addServlet(TransactionServlet.class, "/send");
         servhandler.addServlet(SearchServlet.class, "/search");
         
-      //set the list of handlers for the server
+        //set the list of handlers for the server
         server.setHandler(servhandler);
         
         //start the server

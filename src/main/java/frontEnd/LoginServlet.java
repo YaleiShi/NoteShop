@@ -13,6 +13,10 @@ import dataBase.GreatDataBase;
 @SuppressWarnings("serial")
 public class LoginServlet extends BaseServlet{
 	
+	/**
+	 * provide the login page to enter the id and password
+	 * call doPost method to check the password
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		PrintWriter out = prepareResponse(response);
 		out.println(simpleHeader("Login Page"));
@@ -27,6 +31,11 @@ public class LoginServlet extends BaseServlet{
 		out.println(footer());
 	}
 	
+	/**
+	 * call the checkPass method in the data manager
+	 * display success message if true and send the user to the main page
+	 * or display fail and send the user back
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String userId = (String) request.getParameter(USER_ID);
 		String password = (String) request.getParameter(PASSWORD);

@@ -44,6 +44,15 @@ public abstract class BasicBase {
 		updateStmt.execute();
 	}
 	
+	/**
+	 * update the data by the int index to find
+	 * the position
+	 * @param conditionType
+	 * @param index
+	 * @param query
+	 * @param value
+	 * @throws SQLException
+	 */
 	public void updateData(String conditionType, int index, 
 			   String query, String value) throws SQLException {
 		String state = "update " + table + " set " + query + " = ? where " + conditionType + " = ?";

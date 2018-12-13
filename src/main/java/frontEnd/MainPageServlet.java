@@ -13,6 +13,12 @@ import dataBase.GreatDataBase;
 
 public class MainPageServlet extends BaseServlet{
 	
+	/**
+	 * display the main page of the application
+	 * provide the button to the main page itself,
+	 * user info page, event interface page and logout button
+	 * also display the list of all the events
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		

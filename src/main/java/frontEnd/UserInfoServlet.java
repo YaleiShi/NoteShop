@@ -14,7 +14,8 @@ public class UserInfoServlet extends BaseServlet{
 	
 	/**
 	 * display the user information page
-	 * and the list of tickets
+	 * and the list of tickets,
+	 * also provide the button to transfer the tickets
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);

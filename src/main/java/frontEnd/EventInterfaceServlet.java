@@ -12,6 +12,10 @@ import dataBase.GreatDataBase;
 
 public class EventInterfaceServlet extends BaseServlet{
 	
+	/**
+	 * display events created by the user
+	 * and provide a button to create new event
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		

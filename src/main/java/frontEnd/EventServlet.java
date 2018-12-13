@@ -12,6 +12,10 @@ import dataBase.GreatDataBase;
 
 public class EventServlet extends BaseServlet{
 	
+	/**
+	 * display all the details of the event
+	 * also provide the button to buy the tickets of the event
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		

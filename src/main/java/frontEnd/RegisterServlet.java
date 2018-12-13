@@ -12,6 +12,11 @@ import dataBase.GreatDataBase;
 
 public class RegisterServlet extends BaseServlet{
 	
+	/**
+	 * provide the form to fill with the account details,
+	 * including the unique user id and password
+	 * send the request to doPost method to check if passed
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		PrintWriter out = prepareResponse(response);
@@ -31,6 +36,10 @@ public class RegisterServlet extends BaseServlet{
 		out.println(footer());	
 	}
 	
+	/**
+	 * call the ifUserExist method to see if the user id has been occupied,
+	 * then try to create a new user and save into the database
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String userId = (String) request.getParameter(USER_ID);
 		String password = (String) request.getParameter(PASSWORD);

@@ -16,6 +16,10 @@ import dataBase.GreatDataBase;
  */
 public class BuyServlet extends BaseServlet{
 
+	/**
+	 * displayk the buy page 
+	 * let the user enter the event id and the amount of tickets
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		String eventId = request.getParameter("eventId");
@@ -30,6 +34,10 @@ public class BuyServlet extends BaseServlet{
 		out.println(footer());
 	}
 	
+	/**
+	 * call the buy function of the data manager
+	 * display successful message if succeed
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		GreatDataBase gdb = (GreatDataBase) getServletConfig().getServletContext().getAttribute(DATABASE);

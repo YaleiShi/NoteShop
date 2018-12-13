@@ -108,7 +108,7 @@ public class BaseServlet extends HttpServlet {
 		sb.append("<html><head><title>" + title + "</title>"
 				+ "</head><body>");
 		sb.append("<center>");
-		sb.append("<img src=\"logo.jpg\" alt=\"logo\">");
+//		sb.append("<img src=\"file//:C:/Users/shiya/git/project-4-YaleiShi/image/logo.jpg\" alt=\"logo\">");
 		sb.append("<h1>This is Ticket Purchase APP</h1>");
 		sb.append("<a href=\"mainPage\" style=" + ButtonStyle + ">Main Page</a>");
 		sb.append("<a href=\"userInfo\" style=" + ButtonStyle + ">User Info & Tickets</a>");

@@ -10,6 +10,10 @@ import dataBase.GreatDataBase;
 
 public class CreateEventServlet extends BaseServlet{
 	
+	/**
+	 * display the create event page
+	 * let the user enter the event detail
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		
@@ -26,6 +30,10 @@ public class CreateEventServlet extends BaseServlet{
 		out.println(footer());
 	}
 	
+	/**
+	 * call the new event method in the data manager
+	 * return successful message if succeed 
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		GreatDataBase gdb = (GreatDataBase) getServletConfig().getServletContext().getAttribute(DATABASE);

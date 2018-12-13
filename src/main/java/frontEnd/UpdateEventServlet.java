@@ -10,6 +10,10 @@ import dataBase.GreatDataBase;
 
 public class UpdateEventServlet extends BaseServlet{
 
+	/**
+	 * provide the update event page to the users
+	 * to fill in the message they want to modify
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		String eventId = request.getParameter("eventId");
@@ -27,6 +31,11 @@ public class UpdateEventServlet extends BaseServlet{
 		out.println(footer());
 	}
 	
+	/**
+	 * call the update event method in the data manager
+	 * it will check the user id to match the event creator
+	 * then try to update the event
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		super.checkLogin(request, response);
 		GreatDataBase gdb = (GreatDataBase) getServletConfig().getServletContext().getAttribute(DATABASE);

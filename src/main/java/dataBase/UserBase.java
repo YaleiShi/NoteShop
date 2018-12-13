@@ -53,14 +53,14 @@ public class UserBase extends BasicBase{
 			return false;
 		}
 		//generate the salt and final hashed password
-		String salt = generateSalt();
-		String hashPass = generateFinalPassword(salt, password);
+		byte[] salt = generateSalt();
+		byte[] hashPass = generateFinalPassword(salt, password);
 		//open the link insert the parameter into the table
 		String state = "INSERT INTO " + table + " (userId, salt, hashPass, firstName, lastName, detail) VALUES (?, ?, ?, ?, ?, ?)";
 		PreparedStatement insertStmt = con.prepareStatement(state);
 		insertStmt.setString(1, userId);
-		insertStmt.setString(2, salt);
-		insertStmt.setString(3, hashPass);
+		insertStmt.setBytes(2, salt);
+		insertStmt.setBytes(3, hashPass);
 		insertStmt.setString(4, firstName);
 		insertStmt.setString(5, lastName);
 		insertStmt.setString(6, detail);
@@ -80,13 +80,13 @@ public class UserBase extends BasicBase{
 		if(userId == null || userId.equals("") || newPassword == null || newPassword.equals("")) {
 			return false;
 		}
-		String newSalt = generateSalt();
-		String newHashPass = generateFinalPassword(newSalt, newPassword);
+		byte[] newSalt = generateSalt();
+		byte[] newHashPass = generateFinalPassword(newSalt, newPassword);
 		
 		String state = "update " + table + " set salt = ?, hashPass = ? where userId = ?";
 		PreparedStatement updateStmt = con.prepareStatement(state);
-		updateStmt.setString(1, newSalt);
-		updateStmt.setString(2, newHashPass);
+		updateStmt.setBytes(1, newSalt);
+		updateStmt.setBytes(2, newHashPass);
 		updateStmt.setString(3, userId);
 		updateStmt.execute();
 		return true;
@@ -161,12 +161,23 @@ public class UserBase extends BasicBase{
 		try {
 			ResultSet res = getResult("userId", userId);
 			while(res.next()) {
-				String salt = res.getString("salt");
-				String truePass = res.getString("hashPass");
-				String hashPass = generateFinalPassword(salt, password);
-				if(truePass.equals(hashPass)) {
-					return true;
+				byte[] salt = res.getBytes("salt");
+				byte[] truePass = res.getBytes("hashPass");
+				byte[] hashPass = generateFinalPassword(salt, password);
+				System.out.println("userId: " + userId);
+				System.out.println("salt: " + salt);
+				System.out.println("password: " + password);
+				System.out.println("truePass: " + truePass);
+				System.out.println("hashPass: " + hashPass);
+				if(truePass.length != hashPass.length) {
+					return false;
 				}
+				for(int i = 0; i < truePass.length; i++) {
+					if(truePass[i] != hashPass[i]) {
+						return false;
+					}
+				}
+				return true;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -181,11 +192,11 @@ public class UserBase extends BasicBase{
 	 * return it as a string
 	 * @return
 	 */
-	public String generateSalt() {
+	public byte[] generateSalt() {
 		SecureRandom random = new SecureRandom();
 		byte[] salt = new byte[16];
 		random.nextBytes(salt);
-		return new String(salt);
+		return salt;
 	}
 	
 	/**
@@ -195,22 +206,22 @@ public class UserBase extends BasicBase{
 	 * @param password
 	 * @return
 	 */
-	public String generateFinalPassword(String saltS, String password) {
-		byte[] salt = saltS.getBytes();
+	public byte[] generateFinalPassword(byte[] salt, String password) {
 		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
 		SecretKeyFactory factory;
 		byte[] hash = null;
 		try {
 			factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 			hash = factory.generateSecret(spec).getEncoded();
+			return hash;
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		} catch (InvalidKeySpecException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		
-		return new String(hash);
 	}
 }
